@@ -14,11 +14,63 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:ERROR.completeCode",
+    "onCommand:ERROR.explainCode",
+    "onCommand:ERROR.useLocalModel",
+    "onCommand:ERROR.useApiModel",
+    "onCommand:error-extension.inputTextCommand",
+    "onCommand:error-extension.processFile",
     "onLanguage:python",
     "onLanguage:javascript"
   ],
   "main": "./extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "ERROR.completeCode",
+        "title": "Complete Code"
+      },
+      {
+        "command": "ERROR.explainCode",
+        "title": "Explain Code"
+      },
+      {
+        "command": "error-extension.inputTextCommand",
+        "title": "Input Text"
+      },
+      {
+        "command": "ERROR.useLocalModel",
+        "title": "Use Local Model"
+      },
+      {
+        "command": "ERROR.useApiModel",
+        "title": "Use API Model"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ERROR.completeCode",
+        "key": "ctrl+alt+c",
+        "when": "editorTextFocus",
+        "mac": "cmd+alt+c"
+      },
+      {
+        "command": "ERROR.explainCode",
+        "key": "ctrl+alt+e",
+        "when": "editorTextFocus",
+        "mac": "cmd+alt+e"
+      },
+      {
+        "command": "error-extension.inputTextCommand",
+        "key": "ctrl+shift+i",
+        "when": "editorTextFocus",
+        "mac": "cmd+shift+i"
+      },
+      {
+        "command": "error-extension.processFile",
+        "title": "Process Current File"
+      }
+    ],
     "languages": [
       {
         "id": "python",
@@ -46,7 +98,20 @@
       {
         "language": "javascript"
       }
-    ]
+    ],
+    "actionButtons": {
+      "defaultColor": "#ff0034",
+      "loadNpmCommands": false,
+      "reloadButton": "♻️",
+      "commands": [
+        {
+          "name": "$(primitive-square) Do Nothing Button",
+          "color": "grey",
+          "command": "",
+          "tooltip": "This button does nothing"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",

@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const { getHoverProvider } = require('./hoverProvider');
+const { registerCommands } = require('./commands');
 
 function activate(context) {
     console.log('Extension "ERROR" is now active!');
@@ -12,6 +13,8 @@ function activate(context) {
     const hoverProviderJavaScript = vscode.languages.registerHoverProvider('javascript', {
         provideHover: getHoverProvider('JavaScript')
     });
+
+    registerCommands(context);
 
     // Store providers to deactivate
     context.subscriptions.push(hoverProviderPython, hoverProviderJavaScript);
