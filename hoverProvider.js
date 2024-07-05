@@ -13,15 +13,24 @@ function getHoverProvider(language) {
 
         let pattern;
         if (language === 'Python') {
-            pattern = /(?:^\s*def\s+(\w+)\s*\(.*\):)|(?:^\s*class\s+\w+[^:]*:\s*\n(?:\s+.*)*^\s*def\s+(\w+)\s*\(.*\):)/gm;
+            pattern = /^\s*def\s+(\w+)\s*\([^)]*\)\s*->\s*[^:]*:|^\s*def\s+(\w+)\s*\([^)]*\)\s*:|^\s*class\s+\w+[^:]*:\s*\n(?:\s+.*)*^\s*def\s+(\w+)\s*\([^)]*\)\s*->\s*[^:]*:|^\s*class\s+\w+[^:]*:\s*\n(?:\s+.*)*^\s*def\s+(\w+)\s*\([^)]*\)\s*:/gm;
         } else if (language === 'JavaScript') {
             pattern = /function\s+(\w+)\s*\(.*?\)|[const|let|var]\s+(\w+)\s*=\s*\(.*?\)\s*=>|[const|let|var]\s+(\w+)\s*=.*?function(?:\s+\w+)?\s*\(.*?\)/;
         }
 
         const range = document.getWordRangeAtPosition(position, pattern);
         if (range) {
-            const functionNameMatch = document.getText(range).match(pattern);
-            const functionName = functionNameMatch ? functionNameMatch[1] || functionNameMatch[2] || functionNameMatch[3] : "Function";
+            const text = document.getText(range);
+            let match;
+            let functionName = "Function";
+
+            while ((match = pattern.exec(text)) !== null) {
+                functionName = match[1] || match[2] || match[3] || match[4];
+                if (functionName) {
+                    break;
+                }
+            }
+
             const functionLine = range.start.line;
             let endLine = functionLine;
 
