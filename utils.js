@@ -17,41 +17,52 @@ function getWebviewContent(content, functionName) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Code Explanation</title>
             <style>
                 body {
+                    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
                     margin: 0;
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background-color: #f3f4f6;
-                    color: #2c3e50;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    overflow: hidden; /* Disable body scrolling */
-                }
-                .container {
-                    background: #ffffff;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                    padding: 20px;
-                    max-width: 90%;
-                    max-height: 90vh;
-                    overflow: auto; /* Enable scrolling within the container */
-                }
-                h1 {
-                    font-size: 24px;
+                    padding: 0;
+                    background-color: #f0f2f5;
                     color: #333;
                 }
-                p {
-                    font-size: 16px;
-                    line-height: 1.6;
+                .navbar {
+                    background-color: #343a40;
+                    padding: 15px 20px;
+                    color: #f8f9fa;
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 30px auto;
+                    background-color: #ffffff;
+                    padding: 30px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    font-size: 28px;
+                    font-weight: 600;
+                    margin-bottom: 20px;
+                    border-bottom: 2px solid #007bff;
+                    padding-bottom: 10px;
+                    color: #007bff;
+                }
+                .content {
+                    font-size: 18px;
+                    line-height: 1.7;
+                    color: #555;
                 }
             </style>
         </head>
         <body>
+            <div class="navbar">Code Explanation</div>
             <div class="container">
                 <h1>${functionName} Explanation</h1>
-                <p>${content}</p>
+                <div class="content">
+                    <p>${content}</p>
+                </div>
             </div>
         </body>
         </html>
