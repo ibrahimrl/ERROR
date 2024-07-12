@@ -17,7 +17,7 @@ function activate(context) {
     });
 
     let myButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    myButton.text = `$(sync~spin) Use ${useLocalModel ? "API" : "Local Model"}`;
+    myButton.text = `Use ${useLocalModel ? "API" : "Local Model"}`;
     myButton.tooltip = "Click to toggle between API and local model";
     myButton.command = 'error-extension.toggleModel';
     myButton.show();
@@ -26,7 +26,7 @@ function activate(context) {
     let toggleCommand = vscode.commands.registerCommand('error-extension.toggleModel', () => {
         useLocalModel = !useLocalModel;
         vscode.window.showInformationMessage(`Switched to ${useLocalModel ? "Local Model" : "API"} Mode`);
-        myButton.text = `$(sync~spin) Use ${useLocalModel ? "API" : "Local Model"}`;
+        myButton.text = `Use ${useLocalModel ? "API" : "Local Model"}`;
     });
 
     // Store providers to deactivate
