@@ -87,7 +87,27 @@ function registerCommands(context) {
         }
     });
 
-    context.subscriptions.push(explainCodeCommand, completeCodeCommand);
+    let inputTextCommand = vscode.commands.registerCommand('error-extension.inputTextCommand', async () => {
+        const input = await vscode.window.showInputBox({
+            placeHolder: 'Enter your text here',
+            prompt: 'Type something and press Enter'
+        });
+
+        if (input) {
+            vscode.window.showInformationMessage(`You entered: ${input}`);
+        }
+
+        if (input) {
+            console.log('User Input:', input);
+            vscode.window.showInformationMessage(`You entered: ${input}`);
+        } else {
+            console.log('No input received');
+            vscode.window.showInformationMessage('No input provided');
+        }
+
+    });
+
+    context.subscriptions.push(explainCodeCommand, completeCodeCommand, inputTextCommand);
 }
 
 module.exports = {
