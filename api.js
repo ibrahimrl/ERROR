@@ -1,10 +1,43 @@
+const vscode = require('vscode');
 const fetch = require('cross-fetch');
 
 async function queryHuggingFaceAPI(data) {
-    const API_TOKEN = 'YOUR API TOKEN'; // Ensure token is securely managed
+//     const API_TOKEN = 'YOUR API TOKEN'; // Ensure token is securely managed
+//     if (!API_TOKEN) {
+//         // vscode.window.showErrorMessage('API Token is not set. Please set it using the command palette.');
+//         // return;
+//         throw new Error('API Token is not set.');
+//     }
+
+//     const settings = {
+//         headers: {
+//             "Authorization": `Bearer ${API_TOKEN}`,
+//             "Content-Type": "application/json"
+//         },
+//         method: "POST",
+//         body: JSON.stringify({
+//             ...data,
+//             max_length: 500, // Set max tokens. Adjust based on your experience with average word lengths
+//             min_length: 250, // Set min tokens
+//             length_penalty: 1.0 // Adjusts likelihood of shorter responses
+//         })
+//     };
+
+//     const response = await fetch("https://api-inference.huggingface.co/models/codellama/CodeLlama-7b-hf", settings);
+
+//     if (!response.ok) {
+//         console.error("API request failed:", await response.text());
+//         throw new Error('Failed to fetch from Hugging Face API');
+//     }
+
+//     return await response.json();
+// }
+
+    const config = vscode.workspace.getConfiguration('errorExtension');
+    const API_LINK = config.get('apiLink', 'https://api-inference.huggingface.co/models/codellama/CodeLlama-7b-hf'); // Default link
+    const API_TOKEN = config.get('apiToken', ''); // Default to empty token
+
     if (!API_TOKEN) {
-        // vscode.window.showErrorMessage('API Token is not set. Please set it using the command palette.');
-        // return;
         throw new Error('API Token is not set.');
     }
 
@@ -22,7 +55,7 @@ async function queryHuggingFaceAPI(data) {
         })
     };
 
-    const response = await fetch("https://api-inference.huggingface.co/models/codellama/CodeLlama-7b-hf", settings);
+    const response = await fetch(API_LINK, settings);
 
     if (!response.ok) {
         console.error("API request failed:", await response.text());

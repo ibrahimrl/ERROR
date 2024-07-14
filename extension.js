@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const { getHoverProvider } = require('./hoverProvider');
 const { registerCommands } = require('./commands');
+const { showSettingsWebview } = require('./settings');
 
 // Global variable to keep track of the mode
 let useLocalModel = false;
@@ -40,6 +41,7 @@ function activate(context) {
     settingsButton.show();
 
     let openSettingsCommand = vscode.commands.registerCommand('error-extension.openSettings', () => {
+        showSettingsWebview(context);
     });
 
     // Store providers and button/toggle command to deactivate
