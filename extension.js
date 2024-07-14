@@ -32,8 +32,18 @@ function activate(context) {
         myButton.text = `Use ${useLocalModel ? "API" : "Local Model"}`;
     });
 
+    // Add settings button
+    let settingsButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
+    settingsButton.text = `$(gear)`;
+    settingsButton.tooltip = "Click to configure extension settings";
+    settingsButton.command = 'error-extension.openSettings';
+    settingsButton.show();
+
+    let openSettingsCommand = vscode.commands.registerCommand('error-extension.openSettings', () => {
+    });
+
     // Store providers and button/toggle command to deactivate
-    context.subscriptions.push(hoverProviderPython, hoverProviderJavaScript, myButton, toggleCommand);
+    context.subscriptions.push(hoverProviderPython, hoverProviderJavaScript, myButton, toggleCommand, settingsButton, openSettingsCommand);
 }
 
 function deactivate() {
