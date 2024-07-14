@@ -17,7 +17,7 @@ function activate(context) {
         provideHover: getHoverProvider('JavaScript')
     });
 
-    registerCommands(context);
+    registerCommands(context, () => useLocalModel);
 
     let myButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     myButton.text = `Use ${useLocalModel ? "API" : "Local Model"}`;
