@@ -2,15 +2,15 @@ const vscode = require('vscode');
 
 function showSettingsWebview(context) {
     const panel = vscode.window.createWebviewPanel(
-        'errorSettings', // Identifies the type of the webview. Used internally
-        'Settings', // Title of the panel displayed to the user
-        vscode.ViewColumn.One, // Editor column to show the new webview panel in
+        'errorSettings',
+        'Extension Settings',
+        vscode.ViewColumn.One,
         {
             enableScripts: true
         }
     );
 
-    panel.webview.html = getWebviewContent();
+    panel.webview.html = getWebviewContent(context);
 
     panel.webview.onDidReceiveMessage(
         message => {
@@ -22,6 +22,14 @@ function showSettingsWebview(context) {
             }
         },
         undefined,
+        context.subscriptions
+    );
+
+    panel.onDidChangeViewState(
+        () => {
+            panel.webview.html = getWebviewContent();
+        },
+        null,
         context.subscriptions
     );
 }
@@ -122,7 +130,6 @@ function getWebviewContent() {
         </html>
     `;
 }
-
 
 function saveSettings(context, settings) {
     const config = vscode.workspace.getConfiguration('errorExtension');
