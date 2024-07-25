@@ -27,14 +27,14 @@ function showSettingsWebview(context) {
 
     panel.onDidChangeViewState(
         () => {
-            panel.webview.html = getWebviewContent();
+            panel.webview.html = getWebviewContent(context);
         },
         null,
         context.subscriptions
     );
 }
 
-function getWebviewContent() {
+function getWebviewContent(context) {
     const config = vscode.workspace.getConfiguration('errorExtension');
     const apiLink = config.get('apiLink', '');
     const apiToken = config.get('apiToken', '');
@@ -104,16 +104,22 @@ function getWebviewContent() {
                 <div class="content">
                     <div class="form-group">
                         <label for="apiLink">API Link:</label>
-                        <input type="text" id="apiLink" name="apiLink" value="${apiLink}" onchange="saveSettings()" />
+                        <input type="text" id="apiLink" name="apiLink" value="${apiLink}" oninput="debouncedSaveSettings()" />
                     </div>
                     <div class="form-group">
                         <label for="apiToken">API Token:</label>
-                        <input type="text" id="apiToken" name="apiToken" value="${apiToken}" onchange="saveSettings()" />
+                        <input type="text" id="apiToken" name="apiToken" value="${apiToken}" oninput="debouncedSaveSettings()" />
                     </div>
                 </div>
             </div>
             <script>
                 const vscode = acquireVsCodeApi();
+                let debounceTimeout;
+
+                function debouncedSaveSettings() {
+                    clearTimeout(debounceTimeout);
+                    debounceTimeout = setTimeout(saveSettings, 1000);
+                }
 
                 function saveSettings() {
                     const apiLink = document.getElementById('apiLink').value;
