@@ -77,15 +77,16 @@ function getWebviewContent() {
                 }
                 .form-group {
                     margin-bottom: 20px;
+                    display: flex;
+                    align-items: center;
                 }
                 .form-group label {
-                    display: block;
-                    margin-bottom: 5px;
+                    flex: 0 0 150px;
                     font-weight: bold;
                     color: #000;
                 }
                 .form-group input {
-                    width: 100%;
+                    flex: 1;
                     padding: 10px;
                     font-size: 16px;
                     border: none;
