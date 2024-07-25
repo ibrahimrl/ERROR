@@ -27,14 +27,14 @@ function showSettingsWebview(context) {
 
     panel.onDidChangeViewState(
         () => {
-            panel.webview.html = getWebviewContent(context);
+            panel.webview.html = getWebviewContent();
         },
         null,
         context.subscriptions
     );
 }
 
-function getWebviewContent(context) {
+function getWebviewContent() {
     const config = vscode.workspace.getConfiguration('errorExtension');
     const apiLink = config.get('apiLink', '');
     const apiToken = config.get('apiToken', '');
