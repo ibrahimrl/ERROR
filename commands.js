@@ -18,7 +18,7 @@ function registerCommands(context, getUseLocalModel) {
                         // const explanationText = localModelExplainCode(functionText);
                         // showWebview(editor, result.functionName, explanationText);
                     } else {
-                        const explanationText = `# Explain what the code does and give the user 1 suggestion on how to improve the code:\nEXPLANATION = """\n`;
+                        const explanationText = `# Explain what the code does step by step and provide the user with detailed suggestions on how to improve the code, focusing on best practices, efficiency, readability, and potential edge cases. Be as thorough as possible in your explanation.\nEXPLANATION = """\n`;
                         const finalForm = `${functionText}\n${explanationText}`;
                         const apiResult = await queryHuggingFaceAPI({inputs: finalForm});
                         const processedCode = adjustTextLength(processApiResponseForExplainCode(apiResult, finalForm), 100, 150);
@@ -43,7 +43,7 @@ function registerCommands(context, getUseLocalModel) {
             const functionText = result.text;
             if (functionText) {
                 // Prepare the completion text
-                const completionText = `\n# Complete the code:\n`;
+                const completionText = `# Continue the implementation of the following function. Use the function name, any provided code, and comments to guide your implementation. If the purpose is unclear, make logical assumptions to complete the function in a meaningful way. Handle edge cases and follow best practices.\n`;
                 const newText = `${functionText}${completionText}`;
 
                 const language = document.languageId;
