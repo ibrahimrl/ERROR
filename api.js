@@ -19,9 +19,9 @@ async function queryHuggingFaceAPI(data) {
         method: "POST",
         body: JSON.stringify({
             ...data,
-            max_length: 500, // Set max tokens. Adjust based on your experience with average word lengths
-            min_length: 250, // Set min tokens
-            length_penalty: 1.0 // Adjusts likelihood of shorter responses
+            max_length: 1000, // Set max tokens. Adjust based on your experience with average word lengths
+            min_length: 10, // Set min tokens
+            length_penalty: 0.7 // Adjusts likelihood of shorter responses
         })
     };
 

@@ -72,21 +72,21 @@
       }
     ],
     "configuration": {
-            "type": "object",
-            "title": "Error Extension Settings",
-            "properties": {
-                "errorExtension.apiLink": {
-                    "type": "string",
-                    "default": "https://api-inference.huggingface.co/models/codellama/CodeLlama-7b-hf",
-                    "description": "API link for the Hugging Face model."
-                },
-                "errorExtension.apiToken": {
-                    "type": "string",
-                    "default": "",
-                    "description": "API token for the Hugging Face API."
-                }
-            }
-      },
+      "type": "object",
+      "title": "Error Extension Settings",
+      "properties": {
+        "errorExtension.apiLink": {
+          "type": "string",
+          "default": "https://api-inference.huggingface.co/models/codellama/CodeLlama-7b-hf",
+          "description": "API link for the Hugging Face model."
+        },
+        "errorExtension.apiToken": {
+          "type": "string",
+          "default": "",
+          "description": "API token for the Hugging Face API."
+        }
+      }
+    },
     "languages": [
       {
         "id": "python",
@@ -149,7 +149,7 @@
     "esm": "^3.2.25",
     "express": "^4.19.2",
     "node-fetch": "^3.3.2",
-    "ollama": "^0.5.2",
+    "ollama": "^0.5.8",
     "vscode": "^1.1.34"
   }
 }

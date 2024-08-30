@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+
 const { getHoverProvider } = require('./hoverProvider');
 const { registerCommands } = require('./commands');
 const { showSettingsWebview } = require('./settings');
