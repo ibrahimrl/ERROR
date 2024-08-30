@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const ollama = require('ollama').default || require('ollama');
 const { queryHuggingFaceAPI, adjustTextLength, processApiResponseForCompleteCode, processApiResponseForExplainCode } = require('./api');
 const { showWebview, getFunctionText } = require('./utils');
+const { getModelName } = require('./settings');
 
 function registerCommands(context, getUseLocalModel) {
     let explainCodeCommand = vscode.commands.registerCommand('ERROR.explainCode', async (args) => {
@@ -133,9 +134,11 @@ function registerCommands(context, getUseLocalModel) {
     });
 
     async function explainCodeWithOllama(codeDescription) {
+        const modelName = getModelName();
         try {
+            
           const response = await ollama.chat({
-            model: 'codegemma:2b',
+            model: modelName,
             messages: [{
               role: 'user',
               content: `${codeDescription}`

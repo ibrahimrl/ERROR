@@ -38,6 +38,7 @@ function getWebviewContent() {
     const config = vscode.workspace.getConfiguration('errorExtension');
     const apiLink = config.get('apiLink', '');
     const apiToken = config.get('apiToken', '');
+    const modelName = config.get('modelName', '');
 
     return `
         <!DOCTYPE html>
@@ -110,6 +111,10 @@ function getWebviewContent() {
                         <label for="apiToken">API Token:</label>
                         <input type="text" id="apiToken" name="apiToken" value="${apiToken}" oninput="debouncedSaveSettings()" />
                     </div>
+                    <div class="form-group">
+                        <label for="apiToken">Local Model Name:</label>
+                        <input type="text" id="modelName" name="modelName" value="${modelName}" oninput="debouncedSaveSettings()" />
+                    </div>
                 </div>
             </div>
             <script>
@@ -124,11 +129,13 @@ function getWebviewContent() {
                 function saveSettings() {
                     const apiLink = document.getElementById('apiLink').value;
                     const apiToken = document.getElementById('apiToken').value;
+                    const modelName = document.getElementById('modelName').value;
                     vscode.postMessage({
                         command: 'saveSettings',
                         settings: {
                             apiLink,
-                            apiToken
+                            apiToken,
+                            modelName
                         }
                     });
                 }
@@ -142,8 +149,14 @@ function saveSettings(context, settings) {
     const config = vscode.workspace.getConfiguration('errorExtension');
     config.update('apiLink', settings.apiLink, vscode.ConfigurationTarget.Global);
     config.update('apiToken', settings.apiToken, vscode.ConfigurationTarget.Global);
+    config.update('modelName', settings.modelName, vscode.ConfigurationTarget.Global);
+}
+
+function getModelName() {
+    return vscode.workspace.getConfiguration('errorExtension').get('modelName');
 }
 
 module.exports = {
-    showSettingsWebview
+    showSettingsWebview,
+    getModelName
 };
