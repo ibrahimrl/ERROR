@@ -1,11 +1,16 @@
 const vscode = require('vscode');
 const fetch = require('cross-fetch');
 
+
 async function queryHuggingFaceAPI(data) {
 
     const config = vscode.workspace.getConfiguration('errorExtension');
     const API_LINK = config.get('apiLink', ''); // Default link
     const API_TOKEN = config.get('apiToken', ''); // Default to empty token
+
+    if (!API_LINK) {
+        throw new Error('Model URL is not set.');
+    }
 
     if (!API_TOKEN) {
         throw new Error('API Token is not set.');
@@ -18,22 +23,32 @@ async function queryHuggingFaceAPI(data) {
         },
         method: "POST",
         body: JSON.stringify({
-            ...data,
-            max_length: 1000, // Set max tokens. Adjust based on your experience with average word lengths
-            min_length: 10, // Set min tokens
-            length_penalty: 0.7 // Adjusts likelihood of shorter responses
+            inputs: data.inputs, // Assuming the structure has inputs
+            parameters: {
+                max_length: data.max_length || 1000, // Set max tokens or fallback to default
+                min_length: data.min_length || 10,   // Set min tokens or fallback to default
+                length_penalty: data.length_penalty || 0.7 // Fallback to default length penalty
+            }
         })
     };
 
-    const response = await fetch(API_LINK, settings);
+    try {
+        const response = await fetch(API_LINK, settings);
 
-    if (!response.ok) {
-        console.error("API request failed:", await response.text());
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            console.error("API request failed:", errorDetails);
+            throw new Error(`Hugging Face API error: ${errorDetails}`);
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error('Failed to fetch from Hugging Face API:', error.message);
         throw new Error('Failed to fetch from Hugging Face API');
     }
-
-    return await response.json();
 }
+
 
 function adjustTextLength(text, minWords, maxWords) {
     let words = text.split(/\s+/);
