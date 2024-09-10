@@ -17,7 +17,7 @@ function registerCommands(context, getUseLocalModel) {
                     const explanationText = `# Explain what the code does step by step and provide the user with detailed suggestions on how to improve the code, focusing on best practices, efficiency, readability, and potential edge cases. Be as thorough as possible in your explanation.\nEXPLANATION = """\n`;
                     if (useLocalModel) {
                         const explanation = await explainCodeWithOllama(functionText);
-                        showWebview(editor, result.functionName, explanation);
+                        showWebview(editor, result.functionName, explanation, context);
                         vscode.window.showInformationMessage('Explain Code: See results in the new panel.');
                     } else {
                         const finalForm = `${functionText}\n${explanationText}`;

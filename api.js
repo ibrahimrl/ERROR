@@ -45,7 +45,7 @@ async function queryHuggingFaceAPI(data) {
 
     } catch (error) {
         console.error('Failed to fetch from Hugging Face API:', error.message);
-        throw new Error('Failed to fetch from Hugging Face API');
+        throw new Error('Failed to fetch from Hugging Face API:', error.message);
     }
 }
 

@@ -45,6 +45,10 @@
       {
         "command": "ERROR.useApiModel",
         "title": "Use API Model"
+      },
+      {
+        "command": "errorExtension.rateExplanation",
+        "title": "Rate Explanation"
       }
     ],
     "keybindings": [

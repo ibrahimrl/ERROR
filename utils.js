@@ -1,13 +1,28 @@
 const vscode = require('vscode');
 
-function showWebview(editor, title, content) {
+function showWebview(editor, title, content, context) {
     const panel = vscode.window.createWebviewPanel(
         'explainCode', // Identifies the type of the webview. Used internally
         title, // Title of the panel displayed to the user
         vscode.ViewColumn.Beside, // Shows the webview to the side of the editor
-        {} // Webview options. More details can be added here.
+        {
+            enableScripts: true, // Allow scripts to run in the webview
+            retainContextWhenHidden: true // Optional, but can improve performance
+        } 
     );
     panel.webview.html = getWebviewContent(content, title);
+
+    panel.webview.onDidReceiveMessage(
+        message => {
+            switch (message.command) {
+                case 'submitRating':
+                    vscode.window.showInformationMessage(`Rating: ${message.rating}, Comment: ${message.comment}`);
+                    break;
+            }
+        },
+        undefined,
+        context.subscriptions
+    );
 }
 
 function getWebviewContent(content, functionName) {
@@ -20,7 +35,7 @@ function getWebviewContent(content, functionName) {
             <title>Code Explanation</title>
             <style>
                 body {
-                    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                     margin: 0;
                     padding: 0;
                     background-color: #f0f2f5;
@@ -54,6 +69,49 @@ function getWebviewContent(content, functionName) {
                     line-height: 1.7;
                     color: #555;
                 }
+                .rating {
+                    unicode-bidi: bidi-override;
+                    direction: rtl;
+                    text-align: center;
+                    font-size: 2em;
+                }
+                .rating > span {
+                    display: inline-block;
+                    position: relative;
+                    width: 1.1em;
+                    cursor: pointer;
+                    color: transparent; /* Default non-selected star color */
+                }
+                .rating > span:before {
+                    content: "\\2605"; /* Unicode star character */
+                    position: absolute;
+                    left: 0;
+                    color: #ccc; /* Default color for non-selected stars */
+                }
+                .rating > span:hover:before,
+                .rating > span:hover ~ span:before,
+                .rating > span.active:before,
+                .rating > span.active ~ span:before {
+                    color: #ffc107; /* Golden color for hover and active states */
+                }
+                .comment-box {
+                    display: none; /* Initially hidden */
+                    width: 100%;
+                    padding: 10px;
+                    margin-top: 10px;
+                    border: 2px solid black; 
+                    border-radius: 5px;
+                }
+                .submit-btn {
+                    display: none; /* Initially hidden */
+                    padding: 10px 20px;
+                    background-color: black;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    margin-top: 10px;
+                }
             </style>
         </head>
         <body>
@@ -62,12 +120,55 @@ function getWebviewContent(content, functionName) {
                 <h1>${functionName} Explanation</h1>
                 <div class="content">
                     <p>${content}</p>
+                    <div class="rating">
+                        <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                    </div>
+                    <input type="text" id="comment" class="comment-box" placeholder="Add a comment...">
+                    <button onclick="sendMessage()" class="submit-btn">Submit</button>
                 </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const stars = document.querySelectorAll('.rating > span');
+                    const commentBox = document.getElementById('comment');
+                    const submitButton = document.querySelector('.submit-btn');
+                    let rating = 0;
+
+                    stars.forEach((star, index) => {
+                        star.addEventListener('click', () => {
+                            rating = 5 - index;
+                            updateStars(rating); // Update the visual state of stars
+                            commentBox.style.display = 'block'; // Show the input box
+                            submitButton.style.display = 'block'; // Show the submit button
+                        });
+                    });
+
+                    function updateStars(rating) {
+                        stars.forEach((star, idx) => {
+                            star.classList.remove('active');
+                            if (5 - idx <= rating) {
+                                star.classList.add('active');
+                            }
+                        });
+                    }
+
+                    function sendMessage() {
+                        const comment = commentBox.value;
+                        const vscode = acquireVsCodeApi();
+                        vscode.postMessage({
+                            command: 'submitRating',
+                            rating: rating,
+                            comment: comment
+                        });
+                    }
+                });
+            </script>
         </body>
         </html>
     `;
 }
+
+
 
 async function getFunctionText(document, args) {
     if (!document || !args || !args.range || typeof args.range.start !== 'object') {
