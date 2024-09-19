@@ -5,6 +5,38 @@ function getHoverProvider(language) {
         const line = document.lineAt(position.line);
         const lineText = line.text;
 
+        // Define regex for Todo comments
+        let todoPattern;
+        let commentPattern; // Pattern to check if a line is a comment
+        if (language === 'Python') {
+            todoPattern = /^\s*#\s*Todo:/i; // Python Todo
+            commentPattern = /^\s*#/; // Python comment
+        } else if (language === 'JavaScript') {
+            todoPattern = /^\s*\/\/\s*Todo:/i; // JavaScript Todo
+            commentPattern = /^\s*\/\//; // JavaScript comment
+        }
+
+        if (todoPattern && todoPattern.test(lineText)) {
+            let todoText = lineText;
+            let currentLine = position.line;
+
+            // Include subsequent lines that are also comments
+            while (true) {
+                currentLine += 1;
+                if (currentLine >= document.lineCount) break;
+                const nextLineText = document.lineAt(currentLine).text;
+                if (!commentPattern.test(nextLineText) || nextLineText.trim() === '') break; // Stop if it's not a comment or empty
+                todoText += '\n' + nextLineText;
+            }
+
+            const markdownString = new vscode.MarkdownString();
+            markdownString.appendMarkdown(`### Actions for TODO\n`);
+            markdownString.appendMarkdown(`[🔨 Complete the code](command:ERROR.completeCode?${encodeURIComponent(JSON.stringify({text: lineText, range: {start: {line: position.line, character: 0}}}))})`);
+            markdownString.isTrusted = true; // Allows command execution from markdown
+
+            return new vscode.Hover(markdownString, new vscode.Range(position.line, 0, currentLine - 1, document.lineAt(currentLine - 1).text.length));
+        }
+
         // Check if the line is commented out
         if ((language === 'Python' && lineText.trim().startsWith('#')) ||
             (language === 'JavaScript' && lineText.trim().startsWith('//'))) {
@@ -17,6 +49,7 @@ function getHoverProvider(language) {
         } else if (language === 'JavaScript') {
             pattern = /function\s+(\w+)\s*\(.*?\)|[const|let|var]\s+(\w+)\s*=\s*\(.*?\)\s*=>|[const|let|var]\s+(\w+)\s*=.*?function(?:\s+\w+)?\s*\(.*?\)/;
         }
+
 
         const range = document.getWordRangeAtPosition(position, pattern);
         if (range) {

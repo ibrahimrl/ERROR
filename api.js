@@ -44,6 +44,9 @@ async function queryHuggingFaceAPI(data) {
         return await response.json();
 
     } catch (error) {
+        if (error.name === 'AbortError') {
+            throw new Error("It took too long for the API to generate a response.");
+        }
         console.error('Failed to fetch from Hugging Face API:', error.message);
         throw new Error('Failed to fetch from Hugging Face API:', error.message);
     }

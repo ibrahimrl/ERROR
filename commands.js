@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const ollama = require('ollama').default || require('ollama');
 const { queryHuggingFaceAPI, adjustTextLength, processApiResponseForCompleteCode, processApiResponseForExplainCode } = require('./api');
-const { showWebview, getFunctionText } = require('./utils');
+const { showWebview, getFunctionText, showWebviewCompleteCode } = require('./utils');
 const { getModelName } = require('./settings');
 
 function registerCommands(context, getUseLocalModel) {
@@ -15,19 +15,24 @@ function registerCommands(context, getUseLocalModel) {
                 try {
                     const useLocalModel = getUseLocalModel();
                     const explanationText = `# Explain what the code does step by step and provide the user with detailed suggestions on how to improve the code, focusing on best practices, efficiency, readability, and potential edge cases. Be as thorough as possible in your explanation.\nEXPLANATION = """\n`;
+                    const finalForm = `${functionText}\n${explanationText}`;
                     if (useLocalModel) {
-                        const explanation = await explainCodeWithOllama(functionText);
-                        showWebview(editor, result.functionName, explanation, context);
+                        const modelName = vscode.workspace.getConfiguration('errorExtension').get('modelName');
+                        const explanation = await explainCodeWithOllama(finalForm);
+                        showWebview(editor, result.functionName, explanation, finalForm, 'Local Model', modelName);
                         vscode.window.showInformationMessage('Explain Code: See results in the new panel.');
                     } else {
+                        const apiLink = vscode.workspace.getConfiguration('errorExtension').get('apiLink');
                         const finalForm = `${functionText}\n${explanationText}`;
                         const apiResult = await queryHuggingFaceAPI({inputs: finalForm});
-                        const processedCode = adjustTextLength(processApiResponseForExplainCode(apiResult, finalForm), 100, 150);
-                        showWebview(editor, result.functionName, processedCode);
+                        const explanation = adjustTextLength(processApiResponseForExplainCode(apiResult, finalForm), 100, 150);
+                        showWebview(editor, result.functionName, explanation, finalForm, 'API', apiLink);
                         vscode.window.showInformationMessage('Explain Code: See results in the new panel.');
                     }
                 } catch (error) {
-                    vscode.window.showErrorMessage('Failed to explain code: ' + error.message);
+                    if (error.message !== "Cannot read properties of undefined (reading 'subscriptions')"){
+                        vscode.window.showErrorMessage('Failed to explain code: ' + error.message);
+                    }
                 }
             } else {
                 console.error('Failed to extract function code');
@@ -56,17 +61,20 @@ function registerCommands(context, getUseLocalModel) {
                     comment = '//';
                 }
 
+                const config = vscode.workspace.getConfiguration('errorExtension');
+                const rateModelPerformance = config.get('rateModelPerformance', true);
+
                 try {
                     const useLocalModel = getUseLocalModel();
                     if (useLocalModel) {
-                        const explanation = await explainCodeWithOllama(newText);
-                        if (explanation) {
+                        const completedCode = await explainCodeWithOllama(newText);
+                        if (completedCode) {
                             // const completedCode = processApiResponseForCompleteCode(explanation);
                             vscode.window.showInformationMessage('Complete Code: See results in the current file.');
                             const endLine = args.range.start.line + functionText.split('\n').length;
                             const insertPosition = new vscode.Position(endLine, 0); // Adjust as necessary to place correctly
 
-                            const FinalForm = `\n${comment}Completed code\n${explanation}\n`;
+                            const FinalForm = `\n${comment}Completed code\n${completedCode}\n`;
 
                             editor.edit(editBuilder => {
                                 editBuilder.insert(insertPosition, FinalForm);
@@ -77,8 +85,13 @@ function registerCommands(context, getUseLocalModel) {
                                     vscode.window.showErrorMessage('Failed to insert completion prompt.');
                                 }
                             });
+                            
+                            if (rateModelPerformance){
+                                const modelName = vscode.workspace.getConfiguration('errorExtension').get('modelName');
+                                showWebviewCompleteCode(editor, 'Rating', completedCode, functionText, 'Local Model', modelName);
+                            }
                         } else {
-                            vscode.window.showErrorMessage('No result from API');
+                            vscode.window.showErrorMessage('No result from Local Model');
                         }
                     } else {
                         const apiResult = await queryHuggingFaceAPI({inputs: newText});
@@ -99,6 +112,11 @@ function registerCommands(context, getUseLocalModel) {
                                     vscode.window.showErrorMessage('Failed to insert completion prompt.');
                                 }
                             });
+
+                            if (rateModelPerformance){
+                                const apiLink = vscode.workspace.getConfiguration('errorExtension').get('apiLink');
+                                showWebviewCompleteCode(editor, "Rating", completedCode, functionText, 'API', apiLink);
+                            }
                         } else {
                             vscode.window.showErrorMessage('No result from API');
                         }

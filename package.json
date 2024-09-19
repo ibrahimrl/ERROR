@@ -10,6 +10,9 @@
   "engines": {
     "vscode": "^1.89.0"
   },
+  "enabledApiProposals": [
+    "extensionRuntime"
+  ],
   "categories": [
     "Other"
   ],
@@ -53,36 +56,23 @@
     ],
     "keybindings": [
       {
-        "command": "ERROR.completeCode",
-        "key": "ctrl+alt+c",
-        "when": "editorTextFocus",
-        "mac": "cmd+alt+c"
-      },
-      {
-        "command": "ERROR.explainCode",
-        "key": "ctrl+alt+e",
-        "when": "editorTextFocus",
-        "mac": "cmd+alt+e"
-      },
-      {
-        "command": "error-extension.inputTextCommand",
-        "key": "ctrl+shift+i",
-        "when": "editorTextFocus",
-        "mac": "cmd+shift+i"
-      },
-      {
         "command": "error-extension.processFile",
         "title": "Process Current File"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "Error Extension Settings",
+      "title": "Error",
       "properties": {
         "errorExtension.apiLink": {
           "type": "string",
           "default": "",
           "description": "API link for the Hugging Face model."
+        },
+        "errorExtension.apiLinks": {
+        "type": "array",
+        "default": [],
+        "description": "List of API links available for the extension."
         },
         "errorExtension.apiToken": {
           "type": "string",
@@ -93,7 +83,12 @@
         "type": "string",
         "default": "",
         "description": "The name of the model to be used by the extension."
-      }
+        },
+        "errorExtension.rateModelPerformance": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable to rate model performance after each explanation."
+        }
       }
     },
     "languages": [
