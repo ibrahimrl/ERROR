@@ -62,7 +62,9 @@ To activate code explanations or completions:
 </p>
 
 4. For code completion, especially for tasks annotated with `TODO` comments, select **Complete Code**. This feature extends the existing code or provides implementations based on the contextual comments. Here’s an example of the action triggered by a `TODO` comment:
-   ![Complete Code Action](images/Todo.png)
+   <p align="center">
+   <img src="images/Todo.png" alt="Code Explanation View" width="90%"/>
+</p>
 
 ### Step 4: Rating and Feedback
 After receiving a code explanation or completion:
