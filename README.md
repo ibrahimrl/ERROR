@@ -40,21 +40,28 @@ Using the **ERROR** extension involves several straightforward steps to ensure y
 ### Step 1: Accessing Extension Settings
 To configure the E.R.R.O.R extension for optimal use:
 1. Click on the settings icon in the bottom right corner of Visual Studio Code, as shown below:
-   ![Settings Icon](images/SettingButton.png)
+   <p align="center">
+       <img src="images/SettingButton.png" alt="Settings Icon" width="90%"/>
+   </p>
+   
 
 2. Navigate through the settings panel to adjust preferences for using either the local model or the Hugging Face API. Detailed guidance for each setting is available in the **Extension Settings** section of this document.
 
 ### Step 2: Switching Between Models
 You can easily switch between using a local model and the Hugging Face API by clicking the toggle in the bottom right corner. See the toggle button depicted here:
-![Model Toggle Button](images/ModelSwitchButton.png)
+<p align="center">
+    <img src="images/ModelSwitchButton.png" alt="Model Toggle Button" width="90%"/>
+</p>
 
 ### Step 3: Utilizing Code Explanation and Completion
 To activate code explanations or completions:
 1. Hover over a JavaScript or Python function or method declaration to highlight it. This action will display options for "Complete Code" and "Explain Code."
 2. Click **Explain Code** to initiate an analysis by the selected model, which will open in a new webview panel, showing detailed insights and suggestions for cleaner code, as illustrated here:
-   ![Code Explanation View](images/Explanation.png)
+<p align="center">
+   <img src="images/Explanation.png" alt="Code Explanation View" width="50%"/>
+</p>
 
-3. For code completion, especially for tasks annotated with `TODO` comments, select **Complete Code**. This feature extends the existing code or provides implementations based on the contextual comments. Here’s an example of the action triggered by a `TODO` comment:
+4. For code completion, especially for tasks annotated with `TODO` comments, select **Complete Code**. This feature extends the existing code or provides implementations based on the contextual comments. Here’s an example of the action triggered by a `TODO` comment:
    ![Complete Code Action](images/Todo.png)
 
 ### Step 4: Rating and Feedback
@@ -62,7 +69,9 @@ After receiving a code explanation or completion:
 1. Rate the model's performance using the star system displayed at the bottom of the code explanation view.
 2. Upon selecting a star rating, an input field will appear where you can submit comments for further improvement. This feedback is crucial for refining the model and enhancing the extension.
 
-   ![Feedback Submission](images/Rating.png)
+<p align="center">
+   <img src="images/Rating.png" alt="Feedback Submission" width="50%"/>
+</p>
 ## Known Issues
 **Model Limitations**: Not all models are suitable for code explanations or completions. The quality of the output from Hugging Face or local models can vary significantly, which may sometimes result in unexpected results.
 
@@ -75,4 +84,4 @@ This project is licensed under the [MIT License](LICENSE).
 - **Docker**: For simplifying the setup process through containerization.
 
 ## Contact
-For support or queries, reach out to Ibrahim Rahimli at [Email](mailto:rahimliibrahimm@gmail.com) or [GitHub Issues](https://github.com/yourgithub/error-extension/issues).
+For support or queries, reach out to Ibrahim Rahimli at [Email](mailto:rahimliibrahimm@gmail.com) or [GitHub Issues](https://github.com/ibrahimrl/ERROR/issues).
