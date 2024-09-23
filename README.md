@@ -1,65 +1,78 @@
-# ERROR README
+# ERROR
+An advanced AI-powered developer tool for seamless code integration and comprehension.
 
-This is the README for your extension "ERROR". After writing up a brief description, we recommend including the following sections.
+## Description
+**ERROR** is a Visual Studio Code extension designed to assist developers by providing real-time code explanations and completions using both local and external models. Designed to support both Python and JavaScript, **ERROR** enhances developer productivity by offering intuitive explanations of complex code snippets, thereby elevating coding efficiency and code quality.
 
 ## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- **Code Explanations**: Receive comprehensive explanations for any selected JavaScript or Python function or method. This feature not only clarifies complex algorithms but also suggests ways to improve code efficiency and maintain cleaner, more readable code.
+- **Code Completion**: Automatically complete JavaScript or Python functions and methods, including support for enriching `Todo` comments with actionable code snippets.
+- **Model Switching**: Seamlessly switch between using local models and those hosted on the Hugging Face API to best suit your development environment and needs.
+- **Performance Rating**: Provide feedback on the utility of model-generated suggestions, aiding in the refinement of predictions and enhancements of the AI's accuracy.
 
 ## Requirements
+- **Visual Studio Code** 1.89.0 or newer.
+- **Hugging Face Account**: For API access.
+- **Ollama**: Local model support.
+- **Docker**: Recommended for containerizing the local environment to ensure consistency across different setups.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Installation
+#### Via VS Code Marketplace
+Search for **ERROR** in the VS Code extensions marketplace and install it directly.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+<div style="text-align: center;">
+  <img src="images/Settings.png" alt="Single Image" style="width: 100%;">
+</div>
 
-For example:
+Configure **ERROR** to suit your development needs:
 
-This extension contributes the following settings:
+| Setting | Description |
+|---------|-------------|
+| `errorExtension.apiLink` | Define or modify the API URL used for connecting to the Hugging Face models or choose one from  predefined list |
+| `errorExtension.apiToken` | Set or update the API token required for authentication with the Hugging Face API. |
+| `errorExtension.modelName` | Specify or change the name of the model used for local usage. |
+| `errorExtension.rateModelPerformance` |  Enable or disable the feature to rate the performance and effectiveness of the provided code suggestions. |
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Usage
+Using the **ERROR** extension involves several straightforward steps to ensure you are set up and ready to enhance your coding experience with AI-powered code explanations and completions. Below is a guide to get you started:
+### Step 1: Accessing Extension Settings
+To configure the E.R.R.O.R extension for optimal use:
+1. Click on the settings icon in the bottom right corner of Visual Studio Code, as shown below:
+   ![Settings Icon](images/SettingButton.png)
 
+2. Navigate through the settings panel to adjust preferences for using either the local model or the Hugging Face API. Detailed guidance for each setting is available in the **Extension Settings** section of this document.
+
+### Step 2: Switching Between Models
+You can easily switch between using a local model and the Hugging Face API by clicking the toggle in the bottom right corner. See the toggle button depicted here:
+![Model Toggle Button](images/ModelSwitchButton.png)
+
+### Step 3: Utilizing Code Explanation and Completion
+To activate code explanations or completions:
+1. Hover over a JavaScript or Python function or method declaration to highlight it. This action will display options for "Complete Code" and "Explain Code."
+2. Click **Explain Code** to initiate an analysis by the selected model, which will open in a new webview panel, showing detailed insights and suggestions for cleaner code, as illustrated here:
+   ![Code Explanation View](images/Explanation.png)
+
+3. For code completion, especially for tasks annotated with `TODO` comments, select **Complete Code**. This feature extends the existing code or provides implementations based on the contextual comments. Here’s an example of the action triggered by a `TODO` comment:
+   ![Complete Code Action](images/Todo.png)
+
+### Step 4: Rating and Feedback
+After receiving a code explanation or completion:
+1. Rate the model's performance using the star system displayed at the bottom of the code explanation view.
+2. Upon selecting a star rating, an input field will appear where you can submit comments for further improvement. This feedback is crucial for refining the model and enhancing the extension.
+
+   ![Feedback Submission](images/Rating.png)
 ## Known Issues
+**Model Limitations**: Not all models are suitable for code explanations or completions. The quality of the output from Hugging Face or local models can vary significantly, which may sometimes result in unexpected results.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## License
+This project is licensed under the [MIT License](LICENSE).
 
-## Release Notes
+## Credits
+- **Hugging Face**: For providing an extensive range of models accessible via API.
+- **Ollama**: For the local model integration.
+- **Docker**: For simplifying the setup process through containerization.
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## Contact
+For support or queries, reach out to Ibrahim Rahimli at [Email](mailto:rahimliibrahimm@gmail.com) or [GitHub Issues](https://github.com/yourgithub/error-extension/issues).
