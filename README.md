@@ -62,12 +62,12 @@ To activate code explanations or completions:
    <img src="images/Hover.png" alt="Code Explanation View" width="90%"/>
 </p>
 
-1. Click **Explain Code** to initiate an analysis by the selected model, which will open in a new webview panel, showing detailed insights and suggestions for cleaner code, as illustrated here:
+2. Click **Explain Code** to initiate an analysis by the selected model, which will open in a new webview panel, showing detailed insights and suggestions for cleaner code, as illustrated here:
 <p align="center">
    <img src="images/Explanation.png" alt="Code Explanation View" width="50%"/>
 </p>
 
-1. For code completion, especially for tasks annotated with `TODO` comments, select **Complete Code**. This feature extends the existing code or provides implementations based on the contextual comments. Here’s an example of the action triggered by a `TODO` comment:
+3. For code completion, especially for tasks annotated with `TODO` comments, select **Complete Code**. This feature extends the existing code or provides implementations based on the contextual comments. Here’s an example of the action triggered by a `TODO` comment:
    <p align="center">
    <img src="images/Todo.png" alt="Code Explanation View" width="90%"/>
 </p>
